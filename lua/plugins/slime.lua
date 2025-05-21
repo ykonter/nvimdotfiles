@@ -1,0 +1,65 @@
+local function auto_get_jobid()
+  -- iterate over all buffers to find the first terminal with a valid job
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    vim.print 'running'
+    if vim.api.nvim_get_option_value('buftype', { buf = bufnr }) == 'terminal' then
+      vim.print 'found a terminal'
+      local chan = vim.api.nvim_get_option_value('channel', { buf = bufnr })
+      vim.print 'buffer is'
+      if chan and chan > 0 then
+        vim.print(chan)
+        return chan
+      end
+    end
+  end
+  return nil
+end
+
+local function start_ipython_term()
+  -- vim.cmd ':term'
+  vim.print 'spawn floating terminal'
+  vim.cmd ':FloatermNew' -- use a floating terminal instead?
+  vim.print 'spawned, attaching buffer'
+  local channel = vim.bo.channel
+  vim.api.nvim_chan_send(channel, 'echo try starting ipython from .venv\n')
+  vim.api.nvim_chan_send(channel, '.venv/bin/ipython\n')
+  vim.cmd ':FloatermHide'
+end
+
+local function launch_slime()
+  -- TODO: create terminal session
+  -- switch back to current buffer
+  -- run slimeconfig to attach to buffer
+  -- attach a keybinding to boot
+  start_ipython_term() -- boot terminal
+  vim.cmd ':bp' -- load previous buffer
+  vim.cmd ':SlimeConfig'
+  vim.print 'slime launched!'
+end
+
+return {
+  {
+    'jpalardy/vim-slime',
+    init = function()
+      vim.g.slime_target = 'neovim'
+      vim.g.slime_get_jobid = auto_get_jobid -- from https://github.com/jpalardy/vim-slime/blob/main/autoload/slime/config.vim
+      -- vim.g.slime_dont_ask_default = 0
+      -- vim.g.slime_bracketed_paste = 1  -- will likely not work for nvim terminal
+      vim.g.slime_python_ipython = 1 -- ipython magic paste
+    end,
+    keys = {
+      { '<leader>li', start_ipython_term, desc = 'Launch Ipython term' },
+      { '<leader>ls', launch_slime, desc = 'Launch Slime' },
+    },
+  },
+  {
+    'voldikss/vim-floaterm',
+    lazy = false, -- required to force commands to be available
+    init = function()
+      vim.g.floaterm_autoinsert = false
+    end,
+    keys = {
+      { '<leader>t', '<cmd>FloatermToggle<cr>', desc = 'toggle floating terminal window' }, -- dit werkt
+    },
+  },
+}

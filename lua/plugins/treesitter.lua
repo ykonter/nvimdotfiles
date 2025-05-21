@@ -11,7 +11,7 @@ return {
         'markdown',
         'python',
         'markdown_inline',
-        'latex',
+        -- 'latex',
         'html',
         'bash',
         'c',
