@@ -15,6 +15,8 @@ local function auto_get_jobid()
   return nil
 end
 
+local python_terminal_started = false
+
 local function start_ipython_term()
   -- vim.cmd ':term'
   vim.print 'spawn floating terminal'
@@ -24,6 +26,7 @@ local function start_ipython_term()
   vim.api.nvim_chan_send(channel, 'echo try starting ipython from .venv\n')
   vim.api.nvim_chan_send(channel, '.venv/bin/ipython\n')
   vim.cmd ':FloatermHide'
+  python_terminal_started = true
 end
 
 local function launch_slime()
@@ -31,8 +34,10 @@ local function launch_slime()
   -- switch back to current buffer
   -- run slimeconfig to attach to buffer
   -- attach a keybinding to boot
-  start_ipython_term() -- boot terminal
-  vim.cmd ':bp' -- load previous buffer
+  if not python_terminal_started then
+    start_ipython_term() -- boot terminal
+  end
+  -- vim.cmd ':bp' -- load previous buffer, depricated since using FloatermHide above.. so terminal not active right now
   vim.cmd ':SlimeConfig'
   vim.print 'slime launched!'
 end

@@ -22,19 +22,6 @@ return {
     opts = {},
   },
   {
-    'jpalardy/vim-slime',
-    enabled = true,
-    init = function()
-      vim.g.slime_target = 'tmux'
-    end,
-    config = function()
-      vim.g.slime_default_config = { socket_name = 'default', target_pane = { '1.1' } }
-      vim.g.slime_dont_ask_default = 1
-      vim.g.slime_paste_file = '$HOME/.slime_paste'
-      vim.g.slime_cell_delimiter = '#=='
-    end,
-  },
-  {
     'alexghergh/nvim-tmux-navigation',
     opts = {
       disable_when_zoomed = true,

@@ -30,7 +30,7 @@ return {
       vim.keymap.set('n', '<leader>zb', '<cmd>Telekasten show_backlinks<CR>', { desc = 'show backlings' })
       vim.keymap.set('n', '<leader>zI', '<cmd>Telekasten insert_img_link<CR>', { desc = 'insert image link' })
       vim.keymap.set('n', '<leader>zp', '<cmd>Telekasten panel<CR>', { desc = 'open panel' })
-      vim.keymap.set('n', '<leader>zx', '<cmd>Telekasten toggle_todo<CR>', { desc = 'toggle todo' })
+      vim.keymap.set('n', '<leader>zt', '<cmd>Telekasten toggle_todo<CR>', { desc = 'toggle todo' })
 
       local todosearcher = function()
         local sstring = '- \\[ \\]'
@@ -41,7 +41,7 @@ return {
           disable_coordinates = true,
         }
       end
-      vim.keymap.set('n', '<leader>zt', todosearcher, { desc = 'find todos quickly in notes folder' })
+      vim.keymap.set('n', '<leader>zl', todosearcher, { desc = 'find todos quickly in notes folder' })
 
       -- Call insert link automatically when we start typing a link
       vim.keymap.set('i', '[[', '<cmd>Telekasten insert_link<CR>')

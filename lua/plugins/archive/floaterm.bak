@@ -1,0 +1,24 @@
+local function start_ipython_term() -- happy with this one
+  vim.cmd 'FloatermNew --title=ipython'
+  vim.cmd 'FloatermSend .venv/bin/ipython'
+end
+
+local function python_send() -- not working!
+  vim.cmd 'FloatermSend "paste"'
+  -- vim.fn.execute 'normal! vip'
+  -- vim.cmd "'<,'>FloatermSend"
+  -- vim.cmd 'FloatermSend "---"'
+  vim.cmd 'FloatermSend print("hello world")'
+end
+
+return {
+  'voldikss/vim-floaterm',
+  keys = {
+    { '<leader>lp', start_ipython_term, desc = '[P]ython [N]ew terminal' },
+    { '<leader>t', '<cmd>FloatermToggle<cr>', desc = '[P]ython [T]oggle terminal' },
+    { '<c-c><c-c>', python_send, desc = 'python [C]end [P]aragraph' },
+  },
+  config = function()
+    vim.g.floaterm_autoinsert = false
+  end,
+}

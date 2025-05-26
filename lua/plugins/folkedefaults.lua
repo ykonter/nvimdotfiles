@@ -24,5 +24,8 @@ return {
       statuscolumn = { enabled = true },
       words = { enabled = true },
     },
+    keys = {
+      { '<leader>d', '<cmd>:lua Snacks.notifier.show_history()<cr>', desc = '[D]ebug Lazy issues' },
+    },
   },
 }

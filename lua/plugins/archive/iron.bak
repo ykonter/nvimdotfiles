@@ -1,0 +1,64 @@
+return {
+  'Vigemus/iron.nvim',
+  lazy = false,
+  config = function()
+    local iron = require 'iron.core'
+    local view = require 'iron.view'
+    local common = require 'iron.fts.common'
+    iron.setup {
+      config = {
+        scartch_repl = true,
+        repl_definition = {
+          sh = {
+            command = { 'fish' },
+          },
+          python = {
+            command = { '.venv/bin/ipython', '--no-autoindent' },
+            format = common.bracketed_paste_python,
+            block_deviders = { '# %%', '#%%' },
+          },
+        },
+        repl_filetype = function(bufnr, ft)
+          return ft
+        end,
+        repl_open_cmd = view.bottom(40), -- this works, but I want the floating window
+        repl_open_cmd = view.top '10%',
+        repl_open_cmd = vew.center('30%', 20),
+      },
+      keymaps = {
+        toggle_repl = '<space>rr', -- toggles the repl open and closed.
+        -- If repl_open_command is a table as above, then the following keymaps are
+        -- available
+        -- toggle_repl_with_cmd_1 = "<space>rv",
+        -- toggle_repl_with_cmd_2 = "<space>rh",
+        restart_repl = '<space>rR', -- calls `IronRestart` to restart the repl
+        send_motion = '<space>ic',
+        visual_send = '<space>ic',
+        send_file = '<space>if',
+        send_line = '<space>il',
+        send_paragraph = '<space>ip',
+        send_until_cursor = '<space>iu',
+        send_mark = '<space>im',
+        send_code_block = '<space>ib',
+        send_code_block_and_move = '<space>in',
+        mark_motion = '<space>mc',
+        mark_visual = '<space>mc',
+        remove_mark = '<space>md',
+        cr = '<space>i<cr>',
+        interrupt = '<space>i<space>',
+        exit = '<space>iq',
+        clear = '<space>ix',
+      },
+      -- If the highlight is on, you can change how it looks
+      -- For the available options, check nvim_set_hl
+      highlight = {
+        italic = true,
+      },
+      ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+    }
+
+    -- iron also has a list of commands, see :h iron-commands for all available commands
+    vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
+    vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
+  end,
+}

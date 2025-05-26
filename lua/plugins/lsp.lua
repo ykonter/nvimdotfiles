@@ -14,7 +14,7 @@ return {
   },
   {
     -- Main LSP Configuration
-    'neovim/nvim-lspconfig',
+    'neovim/nvim-lspconfig', -- repo containing lots of defaults
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
@@ -235,6 +235,18 @@ return {
             },
           },
         },
+        ruff = {
+          settings = {
+            init_options = {
+              settings = {
+                logLevel = 'debug', -- dont print all info's as error; https://docs.astral.sh/ruff/editors/setup/#neovim
+              },
+            },
+          },
+          -- settings = {
+          --   callSnippet = 'Replace',
+          -- },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -252,7 +264,8 @@ return {
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'stylua', -- Lua code
+        'ruff', -- python
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
